@@ -1,0 +1,1036 @@
+<!--
+  _        _        _         
+ | |___  _| |_ ____| |_____ __
+ | / / || | \ \ / _` / -_) V /
+ |_\_\\_, |_/_\_\__,_\___|\_/ 
+      |__/                     
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kylxdev • Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+
+        :root {
+            --accent: #a78bfa;
+            --accent-light: #c4b5fd;
+            --bg-dark: #09090b;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.045em;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: #a78bfa;
+        }
+        
+        .nav-link.active {
+            color: #a78bfa;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #a78bfa, transparent);
+        }
+
+        .section-header {
+            font-size: 2.65rem;
+            line-height: 1.04;
+            font-weight: 600;
+            letter-spacing: -0.05em;
+        }
+
+        .premium-card {
+            transition: transform 0.6s cubic-bezier(0.23, 1.0, 0.32, 1), 
+                        box-shadow 0.6s cubic-bezier(0.23, 1.0, 0.32, 1),
+                        border-color 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+        
+        .premium-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, #a78bfa, #c4b5fd, #a78bfa);
+            transform: scaleX(0);
+            transition: transform 0.6s cubic-bezier(0.23, 1.0, 0.32, 1);
+        }
+        
+        .premium-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .premium-card:hover {
+            box-shadow: 0 35px 70px -15px rgb(0 0 0 / 0.55);
+            border-color: #a78bfa;
+        }
+
+        .skill-card {
+            transition: all 0.55s cubic-bezier(0.23, 1.0, 0.32, 1);
+            position: relative;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-14px) scale(1.015);
+            border-color: #a78bfa;
+            box-shadow: 0 28px 55px -12px rgb(0 0 0 / 0.4);
+        }
+        
+        .skill-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(167,139,250,0.06) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            border-radius: 1.5rem;
+        }
+        
+        .skill-card:hover::after {
+            opacity: 1;
+        }
+
+        .lang-btn {
+            transition: all 0.25s cubic-bezier(0.23, 1.0, 0.32, 1);
+        }
+        
+        .lang-btn.active {
+            background-color: #27251f;
+            color: white;
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 4px rgba(167,139,250,0.12);
+        }
+
+        .glow-logo {
+            box-shadow: 0 0 110px rgba(167, 139, 250, 0.25),
+                        0 0 55px rgba(167, 139, 250, 0.15);
+            transition: box-shadow 0.7s ease, transform 0.4s ease;
+        }
+        
+        .glow-logo:hover {
+            box-shadow: 0 0 160px rgba(167, 139, 250, 0.4),
+                        0 0 80px rgba(167, 139, 250, 0.25);
+            transform: scale(1.03);
+        }
+
+        .hero-bg {
+            animation: subtle-zoom 34s ease-in-out infinite alternate;
+        }
+
+        @keyframes subtle-zoom {
+            from { transform: scale(1.0); }
+            to { transform: scale(1.09); }
+        }
+
+        .nav-glass {
+            background: rgba(9, 9, 11, 0.92);
+            backdrop-filter: blur(32px);
+        }
+
+        .section-reveal {
+            opacity: 0;
+            transform: translateY(55px);
+            transition: all 1s cubic-bezier(0.23, 1.0, 0.32, 1);
+        }
+        
+        .section-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal {
+            animation: modalEnter 0.45s cubic-bezier(0.23, 1.0, 0.32, 1);
+        }
+        
+        @keyframes modalEnter {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.94);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2.5px;
+            background: linear-gradient(to right, #a78bfa, #c4b5fd);
+            z-index: 99999;
+            transition: width 0.08s ease-out;
+            box-shadow: 0 0 12px rgba(167,139,250,0.5);
+        }
+
+        .project-modal {
+            backdrop-filter: blur(20px);
+        }
+
+        .tech-pill {
+            background: #18181b;
+            transition: all 0.2s cubic-bezier(0.23, 1.0, 0.32, 1);
+            border: 1px solid #27251f;
+        }
+        
+        .tech-pill:hover {
+            background: #27251f;
+            transform: translateY(-2px);
+            border-color: #a78bfa;
+        }
+
+        .nav-scrolled {
+            box-shadow: 0 12px 40px -10px rgb(0 0 0 / 0.35);
+        }
+
+        .tilt-card {
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.35);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .ripple:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .subtle-grid {
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 42px 42px;
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white">
+    <div id="scroll-progress" class="scroll-progress" style="width: 0%"></div>
+
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b border-zinc-900 nav-glass">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-x-3.5">
+                    <img src="logo.png" alt="kylxdev" class="w-9 h-9 rounded-full object-cover ring-1 ring-zinc-800">
+                    <span class="font-display text-3xl font-semibold tracking-tighter">kylxdev</span>
+                </div>
+
+                <div class="hidden md:flex items-center gap-x-9 text-sm">
+                    <a href="#about" class="nav-link text-zinc-400 hover:text-white font-medium" data-section="about">About</a>
+                    <a href="#skills" class="nav-link text-zinc-400 hover:text-white font-medium" data-section="skills">Skills</a>
+                    <a href="#projects" class="nav-link text-zinc-400 hover:text-white font-medium" data-section="projects">Projects</a>
+                    <a href="#telegram" class="nav-link text-zinc-400 hover:text-white font-medium" data-section="telegram">Telegram</a>
+                </div>
+
+                <div class="flex items-center gap-x-3">
+                    <div class="hidden md:flex items-center bg-zinc-900 border border-zinc-800 rounded-2xl p-1 text-sm">
+                        <button onclick="switchLanguage('en')" id="btn-en"
+                                class="lang-btn active px-4 py-1.5 rounded-xl font-medium text-xs tracking-wider border border-transparent">EN</button>
+                        <button onclick="switchLanguage('ru')" id="btn-ru"
+                                class="lang-btn px-4 py-1.5 rounded-xl font-medium text-xs tracking-wider text-zinc-400 hover:text-white border border-transparent">RU</button>
+                    </div>
+
+                    <a href="https://github.com/kylxdev" target="_blank"
+                       class="hidden md:flex items-center gap-x-2 px-5 py-2 text-sm border border-zinc-800 hover:border-zinc-700 rounded-2xl transition-colors font-medium ripple">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+
+                    <button id="mobile-btn" class="md:hidden w-11 h-11 flex items-center justify-center text-zinc-400 hover:text-white">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden border-t border-zinc-900 bg-zinc-950">
+            <div class="px-6 py-8 flex flex-col gap-y-5 text-sm">
+                <a href="#about" class="py-1 text-zinc-300">About</a>
+                <a href="#skills" class="py-1 text-zinc-300">Skills</a>
+                <a href="#projects" class="py-1 text-zinc-300">Projects</a>
+                <a href="#telegram" class="py-1 text-zinc-300">Telegram</a>
+                
+                <div class="pt-4 border-t border-zinc-900 flex items-center gap-x-3">
+                    <button onclick="switchLanguage('en'); document.getElementById('mobile-menu').classList.add('hidden')" 
+                            class="flex-1 py-2.5 text-center border border-zinc-800 rounded-2xl text-xs font-medium">EN</button>
+                    <button onclick="switchLanguage('ru'); document.getElementById('mobile-menu').classList.add('hidden')" 
+                            class="flex-1 py-2.5 text-center border border-zinc-800 rounded-2xl text-xs font-medium">RU</button>
+                </div>
+                
+                <a href="https://github.com/kylxdev" target="_blank" 
+                   class="flex items-center justify-center gap-x-2 py-3 border border-zinc-800 rounded-2xl text-sm ripple">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
+        <img src="hero-bg.png" alt="" class="hero-bg absolute inset-0 w-full h-full object-cover" style="opacity: 0.33; z-index: 0;">
+        <div class="absolute inset-0 bg-gradient-to-b from-zinc-950/88 via-zinc-950/78 to-zinc-950" style="z-index: 1;"></div>
+        
+        <canvas id="particle-canvas" class="particle-canvas" style="z-index: 2;"></canvas>
+        
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center pt-12" style="z-index: 3;">
+            <div class="flex justify-center mb-9">
+                <img src="logo.png" alt="kylxdev Logo" 
+                     class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover ring-2 ring-zinc-800 glow-logo cursor-pointer"
+                     onclick="triggerLogoExplosion()">
+            </div>
+
+            <h1 class="font-display text-[92px] md:text-[108px] leading-[0.92] font-semibold tracking-[-0.06em] mb-4">kylxdev</h1>
+            
+            <p data-en="Software Developer &amp; Bot Creator" 
+               data-ru="Разработчик и создатель ботов"
+               class="text-3xl md:text-[34px] text-zinc-300 tracking-[-0.02em]">Software Developer &amp; Bot Creator</p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+                <a href="#projects" 
+                   class="inline-flex items-center justify-center gap-x-3 bg-white hover:bg-zinc-100 active:bg-zinc-200 text-zinc-950 font-semibold px-9 py-[17px] rounded-3xl transition-all text-[15px] ripple">
+                    <span data-en="View Projects" data-ru="Посмотреть проекты">View Projects</span>
+                </a>
+                <a href="#telegram" 
+                   class="inline-flex items-center justify-center gap-x-3 border border-white/70 hover:bg-white/5 font-semibold px-9 py-[17px] rounded-3xl transition-all text-[15px] ripple">
+                    <span data-en="Telegram Work" data-ru="Работа в Telegram">Telegram Work</span>
+                </a>
+            </div>
+            
+            <div class="mt-16 flex justify-center">
+                <div class="flex flex-col items-center gap-y-1 text-[10px] tracking-[3.5px] text-zinc-500">
+                    <span data-en="SCROLL TO EXPLORE" data-ru="ПРОКРУТИ ЧТОБЫ ИССЛЕДОВАТЬ">SCROLL TO EXPLORE</span>
+                    <i class="fas fa-chevron-down text-sm animate-bounce mt-1"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="max-w-3xl mx-auto px-6 py-20 border-t border-zinc-900 section-reveal">
+        <div class="max-w-[680px]">
+            <h2 data-en="About me" data-ru="Обо мне" class="section-header mb-9">About me</h2>
+            
+            <div class="space-y-7 text-[17px] leading-relaxed text-zinc-300">
+                <p data-en="Hey, I'm kylxdev. I build Telegram bots, userbots and clean modern web apps that people actually enjoy using." 
+                   data-ru="Привет, я kylxdev. Я создаю Telegram-ботов, userbot'ов и чистые современные веб-приложения, которыми приятно пользоваться.">
+                    Hey, I'm kylxdev. I build Telegram bots, userbots and clean modern web apps that people actually enjoy using.
+                </p>
+                <p data-en="Been diving deep into Python, Java, Kotlin and everything web for a while now. Love turning chaotic ideas into solid, working tools — especially for gaming communities and automation stuff that saves time." 
+                   data-ru="Уже давно копаюсь в Python, Java, Kotlin и всём, что связано с вебом. Люблю превращать хаотичные идеи в рабочие инструменты, особенно для игровых сообществ и автоматизации, которая реально экономит время.">
+                    Been diving deep into Python, Java, Kotlin and everything web for a while now. Love turning chaotic ideas into solid, working tools — especially for gaming communities and automation stuff that saves time.
+                </p>
+                <p data-en="Always learning something new and shipping projects that matter to me." data-ru="Постоянно учусь новому и запускаю то, что мне по-настоящему интересно.">Always learning something new and shipping projects that matter to me.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="stats" class="max-w-6xl mx-auto px-6 py-12 border-t border-zinc-900 section-reveal">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 text-center">
+                <div class="text-5xl font-semibold counter text-white" data-target="14">0</div>
+                <div class="mt-2 text-sm text-zinc-400 tracking-wider">PROJECTS SHIPPED</div>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 text-center">
+                <div class="text-5xl font-semibold counter text-white" data-target="5">0</div>
+                <div class="mt-2 text-sm text-zinc-400 tracking-wider">BOTS RUNNING</div>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 text-center">
+                <div class="text-5xl font-semibold counter text-white" data-target="7">0</div>
+                <div class="mt-2 text-sm text-zinc-400 tracking-wider">MAIN LANGUAGES</div>
+            </div>
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 text-center">
+                <div class="text-5xl font-semibold counter text-white" data-target="3">0</div>
+                <div class="mt-2 text-sm text-zinc-400 tracking-wider">YEARS DEEP IN IT</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="max-w-6xl mx-auto px-6 py-16 border-t border-zinc-900 section-reveal">
+        <h2 data-en="Skills &amp; Tools" data-ru="Навыки и инструменты" class="section-header mb-12">Skills &amp; Tools</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+            <div class="skill-card bg-zinc-900 border border-zinc-800 rounded-3xl p-8 cursor-pointer" onclick="pulseSkill(this)">
+                <div class="flex items-center gap-x-4 mb-5">
+                    <i class="fab fa-python text-4xl text-[#3776AB]"></i>
+                    <h3 class="font-semibold text-2xl">Python</h3>
+                </div>
+                <p data-en="My main weapon. Bots, backends, automation — I use it everywhere." 
+                   data-ru="Моё главное оружие. Боты, бэкенды, автоматизация — использую везде." class="text-zinc-400">My main weapon. Bots, backends, automation — I use it everywhere.</p>
+            </div>
+            
+            <div class="skill-card bg-zinc-900 border border-zinc-800 rounded-3xl p-8 cursor-pointer" onclick="pulseSkill(this)">
+                <div class="flex items-center gap-x-4 mb-5">
+                    <i class="fab fa-java text-4xl text-[#ED8B00]"></i>
+                    <h3 class="font-semibold text-2xl">Java</h3>
+                </div>
+                <p data-en="Reliable backend work and bigger systems." 
+                   data-ru="Надёжный backend и серьёзные системы." class="text-zinc-400">Reliable backend work and bigger systems.</p>
+            </div>
+            
+            <div class="skill-card bg-zinc-900 border border-zinc-800 rounded-3xl p-8 cursor-pointer" onclick="pulseSkill(this)">
+                <div class="flex items-center gap-x-4 mb-5">
+                    <i class="fas fa-mobile-alt text-4xl text-[#7F52FF]"></i>
+                    <h3 class="font-semibold text-2xl">Kotlin</h3>
+                </div>
+                <p data-en="Clean modern development, especially when things need to feel right." 
+                   data-ru="Чистая современная разработка, особенно когда нужно чтобы всё было по-умному." class="text-zinc-400">Clean modern development, especially when things need to feel right.</p>
+            </div>
+            
+            <div class="skill-card bg-zinc-900 border border-zinc-800 rounded-3xl p-8 cursor-pointer" onclick="pulseSkill(this)">
+                <div class="flex items-center gap-x-4 mb-5">
+                    <i class="fab fa-js text-4xl text-[#F7DF1E]"></i>
+                    <h3 class="font-semibold text-2xl">JavaScript</h3>
+                </div>
+                <p data-en="Making interfaces alive and responsive." 
+                   data-ru="Оживляю интерфейсы и делаю их удобными." class="text-zinc-400">Making interfaces alive and responsive.</p>
+            </div>
+            
+            <div class="skill-card bg-zinc-900 border border-zinc-800 rounded-3xl p-8 cursor-pointer" onclick="pulseSkill(this)">
+                <div class="flex items-center gap-x-4 mb-5">
+                    <i class="fab fa-html5 text-4xl text-[#E44D26]"></i>
+                    <h3 class="font-semibold text-2xl">Web Stack</h3>
+                </div>
+                <p data-en="Tailwind, clean HTML/CSS and that nice glass look." 
+                   data-ru="Tailwind, чистый HTML/CSS и приятный glass-стиль." class="text-zinc-400">Tailwind, clean HTML/CSS and that nice glass look.</p>
+            </div>
+        </div>
+        
+        <div class="mt-8 flex flex-wrap gap-2">
+            <div class="px-4 py-1.5 text-xs bg-zinc-900 border border-zinc-800 rounded-2xl text-zinc-400 tech-pill">FastAPI</div>
+            <div class="px-4 py-1.5 text-xs bg-zinc-900 border border-zinc-800 rounded-2xl text-zinc-400 tech-pill">SQLite</div>
+            <div class="px-4 py-1.5 text-xs bg-zinc-900 border border-zinc-800 rounded-2xl text-zinc-400 tech-pill">Git</div>
+            <div class="px-4 py-1.5 text-xs bg-zinc-900 border border-zinc-800 rounded-2xl text-zinc-400 tech-pill">Gemini</div>
+        </div>
+    </section>
+
+    <section id="projects" class="max-w-6xl mx-auto px-6 py-16 border-t border-zinc-900 section-reveal">
+        <h2 data-en="Featured Projects" data-ru="Избранные проекты" class="section-header mb-12">Featured Projects</h2>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+            <div onclick="showProjectModal(0)" class="premium-card tilt-card bg-zinc-900 border border-zinc-800 rounded-3xl p-9 flex flex-col cursor-pointer">
+                <div class="flex-1">
+                    <div class="flex items-center gap-x-4 mb-5">
+                        <div class="w-10 h-10 rounded-2xl bg-violet-500/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-robot text-violet-400 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-3xl">CiferElite</h3>
+                    </div>
+                    <p data-en="My main userbot. Modular, powerful, with custom channels and tools for gaming communities." 
+                       data-ru="Мой основной userbot. Модульный, мощный, с кастомными каналами и инструментами для игровых сообществ.">
+                        My main userbot. Modular, powerful, with custom channels and tools for gaming communities.
+                    </p>
+                </div>
+                <div class="pt-8 mt-auto flex flex-wrap gap-2">
+                    <div class="px-3.5 py-1 text-xs bg-zinc-950 rounded-2xl text-zinc-400 tech-pill">Python</div>
+                    <div class="px-3.5 py-1 text-xs bg-zinc-950 rounded-2xl text-zinc-400 tech-pill">TeleBot</div>
+                </div>
+            </div>
+            
+            <div onclick="showProjectModal(1)" class="premium-card tilt-card bg-zinc-900 border border-zinc-800 rounded-3xl p-9 flex flex-col cursor-pointer">
+                <div class="flex-1">
+                    <div class="flex items-center gap-x-4 mb-5">
+                        <div class="w-10 h-10 rounded-2xl bg-violet-500/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-gamepad text-violet-400 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-3xl">StandLeo Tools</h3>
+                    </div>
+                    <p data-en="Bots for the StandLeo community. Shitposting, engagement, everything that makes private server life better." 
+                       data-ru="Боты для сообщества StandLeo. Шитпостинг, вовлечение и всё, что делает жизнь на приватном сервере круче.">
+                        Bots for the StandLeo community. Shitposting, engagement, everything that makes private server life better.
+                    </p>
+                </div>
+                <div class="pt-8 mt-auto flex flex-wrap gap-2">
+                    <div class="px-3.5 py-1 text-xs bg-zinc-950 rounded-2xl text-zinc-400 tech-pill">Python</div>
+                    <div class="px-3.5 py-1 text-xs bg-zinc-950 rounded-2xl text-zinc-400 tech-pill">Gaming</div>
+                </div>
+            </div>
+            
+            <div onclick="showProjectModal(2)" class="premium-card tilt-card bg-zinc-900 border border-zinc-800 rounded-3xl p-9 flex flex-col cursor-pointer">
+                <div class="flex-1">
+                    <div class="flex items-center gap-x-4 mb-5">
+                        <div class="w-10 h-10 rounded-2xl bg-violet-500/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-search text-violet-400 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-3xl">Sherlock OSINT</h3>
+                    </div>
+                    <p data-en="Fast username search bot with database and clean admin interface. Simple but powerful." 
+                       data-ru="Быстрый бот для поиска по username с базой данных и удобной админкой. Просто, но мощно.">
+                        Fast username search bot with database and clean admin interface. Simple but powerful.
+                    </p>
+                </div>
+                <div class="pt-8 mt-auto flex flex-wrap gap-2">
+                    <div class="px-3.5 py-1 text-xs bg-zinc-950 rounded-2xl text-zinc-400 tech-pill">Python</div>
+                    <div class="px-3.5 py-1 text-xs bg-zinc-950 rounded-2xl text-zinc-400 tech-pill">OSINT</div>
+                </div>
+            </div>
+            
+            <div onclick="showProjectModal(3)" class="premium-card tilt-card bg-zinc-900 border border-zinc-800 rounded-3xl p-9 flex flex-col cursor-pointer">
+                <div class="flex-1">
+                    <div class="flex items-center gap-x-4 mb-5">
+                        <div class="w-10 h-10 rounded-2xl bg-violet-500/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-globe text-violet-400 text-2xl"></i>
+                        </div>
+                        <h3 class="font-semibold text-3xl">Web &amp; AI Stuff</h3>
+                    </div>
+                    <p data-en="Beautiful websites, chat interfaces and AI integrations. I really enjoy making things look good and work smoothly." 
+                       data-ru="Красивые сайты, чат-интерфейсы и интеграции с ИИ. Люблю когда всё выглядит круто и работает без тормозов.">
+                        Beautiful websites, chat interfaces and AI integrations. I really enjoy making things look good and work smoothly.
+                    </p>
+                </div>
+                <div class="pt-8 mt-auto flex flex-wrap gap-2">
+                    <div class="px-3.5 py-1 text-xs bg-zinc-950 rounded-2xl text-zinc-400 tech-pill">Tailwind</div>
+                    <div class="px-3.5 py-1 text-xs bg-zinc-950 rounded-2xl text-zinc-400 tech-pill">FastAPI</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="telegram" class="max-w-6xl mx-auto px-6 py-20 border-t border-zinc-900 section-reveal">
+        <div class="grid md:grid-cols-2 gap-x-16 gap-y-12 items-center">
+            <div>
+                <div class="inline-flex items-center gap-x-2 px-5 py-2 rounded-3xl bg-zinc-900 border border-zinc-800 mb-8 text-sm">
+                    <i class="fab fa-telegram-plane text-[#229ED9]"></i>
+                    <span data-en="What I love most" data-ru="Что я люблю больше всего" class="font-medium">What I love most</span>
+                </div>
+                
+                <h2 data-en="Telegram is where I feel at home." 
+                    data-ru="Telegram — это место, где я чувствую себя дома." 
+                    class="section-header leading-[1.05] mb-8">Telegram is where I feel at home.</h2>
+                
+                <div class="space-y-5 text-[17px] text-zinc-300 max-w-[38ch]">
+                    <p data-en="Most of my energy goes into making Telegram bots that are actually useful and fun for communities." 
+                       data-ru="Большая часть энергии уходит на создание Telegram-ботов, которые реально полезны и интересны сообществам.">
+                        Most of my energy goes into making Telegram bots that are actually useful and fun for communities.
+                    </p>
+                    <p data-en="From private gaming servers to smart automation — I enjoy building things that people come back to every day." 
+                       data-ru="От приватных игровых серверов до умной автоматизации — мне нравится делать то, к чему люди возвращаются каждый день.">
+                        From private gaming servers to smart automation — I enjoy building things that people come back to every day.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="relative">
+                <img src="hero-bg.png" alt="Telegram Development" 
+                     class="rounded-3xl shadow-2xl border border-zinc-800 w-full object-cover aspect-[16/10]">
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-3xl mx-auto px-6 py-24 text-center border-t border-zinc-900 section-reveal">
+        <h2 data-en="Let's build something cool together." data-ru="Давай сделаем что-то крутое вместе." class="section-header mb-5">Let's build something cool together.</h2>
+        <p data-en="Always open to new projects, collabs, or just chatting about bots and code." 
+           data-ru="Всегда открыт к новым проектам, коллаборациям или просто поболтать про ботов и код." class="text-xl text-zinc-400 max-w-md mx-auto">Always open to new projects, collabs, or just chatting about bots and code.</p>
+        
+        <div class="flex flex-wrap justify-center gap-4 mt-12">
+            <a href="https://github.com/kylxdev" target="_blank"
+               class="flex items-center justify-center gap-x-3 px-8 py-4 border border-zinc-700 hover:bg-zinc-900 rounded-3xl transition-all font-medium ripple">
+                <i class="fab fa-github text-2xl"></i>
+                <span>GitHub</span>
+            </a>
+            
+            <a href="https://t.me/wceyo" target="_blank"
+               class="flex items-center justify-center gap-x-3 px-8 py-4 bg-white text-zinc-950 font-semibold rounded-3xl hover:bg-zinc-100 transition-all ripple">
+                <i class="fab fa-telegram-plane text-2xl"></i>
+                <span>Telegram</span>
+            </a>
+        </div>
+        
+        <div class="mt-20 text-xs tracking-[4px] text-zinc-500">© 2026 kylxdev</div>
+    </section>
+
+    <div id="project-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/85 project-modal">
+        <div class="bg-zinc-900 border border-zinc-700 rounded-3xl max-w-2xl w-full p-10 relative" onclick="event.target === this && closeModal()">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-zinc-400 hover:text-white text-3xl leading-none">×</button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'en';
+        let particles = [];
+        let mouseX = 0, mouseY = 0;
+        let canvas, ctx;
+        let animationFrame = null;
+
+        function initParticles() {
+            canvas = document.getElementById('particle-canvas');
+            ctx = canvas.getContext('2d', { alpha: true });
+            
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+            
+            particles = [];
+            const count = Math.min(95, Math.floor(window.innerWidth / 18));
+            
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2.6 + 0.9,
+                    speedX: (Math.random() - 0.5) * 0.55,
+                    speedY: (Math.random() - 0.5) * 0.55,
+                    opacity: Math.random() * 0.7 + 0.3,
+                    hue: Math.random() * 20 + 255
+                });
+            }
+            
+            canvas.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            canvas.addEventListener('mouseleave', () => {
+                mouseX = 0; mouseY = 0;
+            });
+            
+            animateParticles();
+        }
+        
+        function animateParticles() {
+            if (!ctx || !canvas) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                
+                if (mouseX > 0 && mouseY > 0) {
+                    const dx = p.x - mouseX;
+                    const dy = p.y - mouseY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < 160 && dist > 3) {
+                        const force = (160 - dist) / 160 * 1.1;
+                        p.speedX += (dx / dist) * force * 0.042;
+                        p.speedY += (dy / dist) * force * 0.042;
+                    }
+                }
+                
+                p.x += p.speedX;
+                p.y += p.speedY;
+                
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -0.92;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -0.92;
+                
+                p.speedX *= 0.978;
+                p.speedY *= 0.978;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(260, 85%, 78%, ${p.opacity})`;
+                ctx.fill();
+                
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < 135) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `hsla(260, 75%, 82%, ${0.18 * (1 - dist / 135)})`;
+                        ctx.lineWidth = 0.85;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            animationFrame = requestAnimationFrame(animateParticles);
+        }
+
+        function initScrollProgress() {
+            const bar = document.getElementById('scroll-progress');
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const height = document.documentElement.scrollHeight - window.innerHeight;
+                const percent = height > 0 ? (scrollTop / height) * 100 : 0;
+                bar.style.width = percent + '%';
+            });
+        }
+
+        function initNavbar() {
+            const nav = document.getElementById('navbar');
+            const links = document.querySelectorAll('.nav-link');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 90) {
+                    nav.classList.add('nav-scrolled');
+                } else {
+                    nav.classList.remove('nav-scrolled');
+                }
+                
+                let currentSection = '';
+                document.querySelectorAll('section[id]').forEach(sec => {
+                    if (window.scrollY >= sec.offsetTop - 220) {
+                        currentSection = sec.getAttribute('id');
+                    }
+                });
+                
+                links.forEach(l => {
+                    l.classList.remove('active');
+                    if (l.getAttribute('data-section') === currentSection) {
+                        l.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        function initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(a => {
+                a.addEventListener('click', function(e) {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        e.preventDefault();
+                        const offsetTop = target.getBoundingClientRect().top + window.scrollY - 90;
+                        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+
+        function initScrollReveal() {
+            const items = document.querySelectorAll('.section-reveal');
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+            
+            items.forEach(item => obs.observe(item));
+        }
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.textContent = el.getAttribute(`data-${lang}`);
+            });
+
+            const enBtn = document.getElementById('btn-en');
+            const ruBtn = document.getElementById('btn-ru');
+            
+            if (lang === 'en') {
+                enBtn.classList.add('active');
+                ruBtn.classList.remove('active');
+            } else {
+                ruBtn.classList.add('active');
+                enBtn.classList.remove('active');
+            }
+            
+            localStorage.setItem('kylxdev-lang', lang);
+        }
+
+        function loadSavedLanguage() {
+            const saved = localStorage.getItem('kylxdev-lang');
+            if (saved === 'ru') switchLanguage('ru');
+        }
+
+        function pulseSkill(card) {
+            card.style.transition = 'transform 0.1s ease, box-shadow 0.1s ease';
+            card.style.transform = 'scale(0.96)';
+            card.style.boxShadow = '0 0 0 12px rgba(167,139,250,0.15)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.55s cubic-bezier(0.23, 1.0, 0.32, 1)';
+                card.style.transform = '';
+                card.style.boxShadow = '';
+            }, 180);
+        }
+
+        const projectData = [
+            {
+                title: { en: "CiferElite", ru: "CiferElite" },
+                desc: { 
+                    en: "Advanced modular Telegram userbot with plugin system, custom forum channels and HVH tools for gaming communities.", 
+                    ru: "Продвинутый модульный Telegram-userbot с системой плагинов, кастомными форум-каналами и HVH-инструментами для игровых сообществ." 
+                },
+                tech: "Python • TeleBot • SQLite • Custom Plugins",
+                status: { en: "Actively maintained • Core project", ru: "Активно поддерживается • Основной проект" }
+            },
+            {
+                title: { en: "StandLeo Tools", ru: "Инструменты StandLeo" },
+                desc: { 
+                    en: "Bots and utilities for the StandLeo private server community. Focus on engagement, shitposting and quality of life features.", 
+                    ru: "Боты и утилиты для сообщества приватного сервера StandLeo. Упор на вовлечение, щитпостинг и улучшение качества жизни." 
+                },
+                tech: "Python • TeleBot • Community Features",
+                status: { en: "Community driven • Ongoing updates", ru: "Сообщество • Регулярные обновления" }
+            },
+            {
+                title: { en: "Sherlock OSINT Bot", ru: "Sherlock OSINT Bot" },
+                desc: { 
+                    en: "Fast and accurate username search tool with database backend, admin panel and inline mode for quick investigations.", 
+                    ru: "Быстрый и точный инструмент поиска по username с базой данных, админ-панелью и inline-режимом для быстрых расследований." 
+                },
+                tech: "Python • SQLite • TeleBot • Inline Mode",
+                status: { en: "Production ready", ru: "Готов к использованию" }
+            },
+            {
+                title: { en: "Web & AI Projects", ru: "Веб и AI-проекты" },
+                desc: { 
+                    en: "Modern single-page apps, beautiful portfolios and AI chat interfaces built with Tailwind + FastAPI backends.", 
+                    ru: "Современные одностраничные приложения, красивые портфолио и AI-чат-интерфейсы на Tailwind + FastAPI." 
+                },
+                tech: "Tailwind • FastAPI • Gemini • JavaScript",
+                status: { en: "Multiple projects • Always evolving", ru: "Несколько проектов • Постоянно развиваются" }
+            }
+        ];
+
+        function showProjectModal(index) {
+            const modal = document.getElementById('project-modal');
+            const contentDiv = document.getElementById('modal-content');
+            const proj = projectData[index];
+            const lang = currentLang;
+            
+            contentDiv.innerHTML = `
+                <div>
+                    <div class="flex items-center gap-x-5 mb-6">
+                        <div class="w-14 h-14 rounded-3xl bg-violet-500/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-robot text-violet-400 text-[34px]"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-[42px] leading-none">${proj.title[lang]}</h3>
+                            <div class="text-sm text-zinc-400 mt-1.5">${proj.status[lang]}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-[17px] leading-relaxed text-zinc-200 mb-9">
+                        ${proj.desc[lang]}
+                    </div>
+                    
+                    <div class="mb-9">
+                        <div class="uppercase text-xs tracking-[3px] text-zinc-500 mb-4">Technologies used</div>
+                        <div class="flex flex-wrap gap-2">
+                            ${proj.tech.split(' • ').map(item => 
+                                `<div class="px-5 py-2 text-sm bg-zinc-950 border border-zinc-800 rounded-2xl text-zinc-400 tech-pill">${item}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-4 pt-6 border-t border-zinc-800">
+                        <button onclick="closeModal()" class="flex-1 py-[17px] border border-zinc-700 hover:bg-zinc-800 active:bg-zinc-700 rounded-2xl text-sm font-medium transition-colors">Close</button>
+                        <a href="https://github.com/kylxdev" target="_blank" class="flex-1 py-[17px] bg-white text-zinc-950 font-semibold rounded-2xl text-sm flex items-center justify-center gap-x-2 hover:bg-zinc-100 transition-colors ripple">
+                            <i class="fab fa-github"></i> <span>View on GitHub</span>
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('project-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        function initTiltCards() {
+            const cards = document.querySelectorAll('.tilt-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) - 0.5;
+                    const y = ((e.clientY - rect.top) / rect.height) - 0.5;
+                    
+                    const rotX = y * -12;
+                    const rotY = x * 18;
+                    
+                    card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(8px)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1.0, 0.32, 1)';
+                    card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+                    
+                    setTimeout(() => {
+                        if (card) card.style.transition = 'transform 0.1s ease-out';
+                    }, 650);
+                });
+            });
+        }
+
+        function initAnimatedCounters() {
+            const counters = document.querySelectorAll('.counter');
+            
+            const animateCounter = (el) => {
+                const target = parseInt(el.getAttribute('data-target'));
+                const duration = 1600;
+                const start = performance.now();
+                
+                function update(now) {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.floor(target * eased);
+                    
+                    el.textContent = current.toLocaleString();
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    } else {
+                        el.textContent = target.toLocaleString();
+                    }
+                }
+                
+                requestAnimationFrame(update);
+            };
+            
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        counters.forEach(c => {
+                            if (!c.classList.contains('counted')) {
+                                c.classList.add('counted');
+                                animateCounter(c);
+                            }
+                        });
+                        obs.disconnect();
+                    }
+                });
+            }, { threshold: 0.6 });
+            
+            const statsSection = document.getElementById('stats');
+            if (statsSection) obs.observe(statsSection);
+        }
+
+        function initMobileMenu() {
+            const btn = document.getElementById('mobile-btn');
+            const menu = document.getElementById('mobile-menu');
+            
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+                const icon = btn.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
+            
+            menu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.add('hidden');
+                    btn.querySelector('i').classList.add('fa-bars');
+                    btn.querySelector('i').classList.remove('fa-times');
+                });
+            });
+        }
+
+        function triggerLogoExplosion() {
+            const canvasEl = document.getElementById('particle-canvas');
+            if (!canvasEl || !ctx) return;
+            
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight * 0.38;
+            
+            for (let i = 0; i < 28; i++) {
+                particles.push({
+                    x: centerX + (Math.random() - 0.5) * 80,
+                    y: centerY + (Math.random() - 0.5) * 80,
+                    size: Math.random() * 3.5 + 1.2,
+                    speedX: (Math.random() - 0.5) * 4.5,
+                    speedY: (Math.random() - 0.5) * 4.5,
+                    opacity: 0.9,
+                    hue: 260
+                });
+            }
+        }
+
+        function initEverything() {
+            initParticles();
+            initScrollProgress();
+            initNavbar();
+            initSmoothScroll();
+            initScrollReveal();
+            initTiltCards();
+            initAnimatedCounters();
+            initMobileMenu();
+            loadSavedLanguage();
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === "Escape") {
+                    const modal = document.getElementById('project-modal');
+                    if (!modal.classList.contains('hidden')) closeModal();
+                }
+            });
+            
+            const modalBg = document.getElementById('project-modal');
+            modalBg.addEventListener('click', function(e) {
+                if (e.target === modalBg) closeModal();
+            });
+            
+            setTimeout(() => {
+                const firstSkill = document.querySelector('.skill-card');
+                if (firstSkill) {
+                    firstSkill.style.transition = 'all 0.55s cubic-bezier(0.23, 1.0, 0.32, 1)';
+                }
+            }, 800);
+        }
+
+        window.onload = initEverything;
+    </script>
+</body>
+</html>
